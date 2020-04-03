@@ -37,8 +37,10 @@ namespace Duplicati.Library.Common.IO
         /// </summary>
         public static readonly string LOGTAG = Logging.Log.LogTagFromType<VssBackupComponents>();
 
-
-        private IVssBackupComponents _vssBackupComponents;
+        // We use a Lazy<object> initializer to avoid triggering dependencies on AlphaVSS.Common,
+        // which we remove from several of the Linux and Mac packages.
+        private Lazy<object> _vssBackupComponentsCache = new Lazy<object>(VssBackupComponentsHelper.GetVssBackupComponents);
+        private IVssBackupComponents _vssBackupComponents => (IVssBackupComponents) this._vssBackupComponentsCache?.Value;
 
         /// <summary>
         /// The list of snapshot ids for each volume, key is the path root, eg C:\.
@@ -61,11 +63,6 @@ namespace Duplicati.Library.Common.IO
         /// A list of mapped drives
         /// </summary>
         private List<DefineDosDevice> _mappedDrives;
-
-        public VssBackupComponents()
-        {
-            _vssBackupComponents = VssBackupComponentsHelper.GetVssBackupComponents();
-        }
 
         public void SetupWriters(Guid[] includedWriters, Guid[] excludedWriters)
         {
@@ -273,7 +270,7 @@ namespace Duplicati.Library.Common.IO
             if (_vssBackupComponents != null)
             {
                 _vssBackupComponents.Dispose();
-                _vssBackupComponents = null;
+                _vssBackupComponentsCache = null;
             }
         }
     }

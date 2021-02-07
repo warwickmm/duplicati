@@ -24,7 +24,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Checkout Source
+    - name: Checkout Source (This text comes from the pull request fork repository)
       uses: actions/checkout@v2
 
     - name: Install NuGet

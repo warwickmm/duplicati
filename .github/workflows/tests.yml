@@ -16,10 +16,6 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-    - name: Install Mono (Linux)
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install mono-complete
-
     - name: Add msbuild to PATH (Windows)
       if: matrix.os == 'windows-latest'
       uses: microsoft/setup-msbuild@v1.0.2

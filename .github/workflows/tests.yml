@@ -34,7 +34,7 @@ jobs:
       run: dotnet build --no-restore Duplicati.sln
 
     - name: Run unit tests
-      run: dotnet test --no-build --verbosity normal Duplicati.sln
+      run: dotnet test --no-build --verbosity minimal Duplicati.sln
 
   ui_tests:
     name: UI tests
